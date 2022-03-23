@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import styled from "styled-components";
 
 import VideoList from "../VideoList";
@@ -16,17 +16,11 @@ export default function App() {
       <AppHeader />
       <Main>
         <Container>
-          <Switch>
-            <Route path="/videos" exact>
-              <VideoList />
-            </Route>
-            <Route path="/videos/:videoId">
-              <div>🖥 Use a modal to display video details!</div>
-            </Route>
-            <Route path="/" exact>
-              <Redirect to="/videos" />
-            </Route>
-          </Switch>
+          <Routes>
+            <Route path="/videos" element={<VideoList />} />
+            <Route path="/videos/:videoId" element={<div>🖥 Use a modal to display video details!</div>} />
+            <Route path="/" element={<Navigate to="/videos" replace />} />
+          </Routes>
         </Container>
       </Main>
     </>
