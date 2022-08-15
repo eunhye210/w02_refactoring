@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import VideoListEntry from "../VideoListEntry";
+import { searchYoutube } from "../../api/youtube";
 
 const Wrapper = styled.div`
   display: grid;
@@ -12,26 +13,29 @@ const Wrapper = styled.div`
   row-gap: 20px;
 `;
 
-export default function VideoList() {
+export default function VideoList({ searchKeyword }) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const test = async () => {
+      const res = await searchYoutube(searchKeyword);
+      setItems(res.items[0]);
+    }
+
+    test();
+  }, [])
+  console.log(items);
+
   return (
     <Wrapper>
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
-      <VideoListEntry />
+      {searchKeyword !== "" && (
+        <VideoListEntry
+          title={items.snippet.title}
+          thumbnail={items.snippet.thumbnails.default.url}
+          published={items.snippet.publishedAt}
+          description={items.snippet.description}
+        />
+      )}
     </Wrapper>
   );
 }

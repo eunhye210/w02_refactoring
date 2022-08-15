@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
@@ -46,7 +46,7 @@ const Header = styled.header`
   }
 `;
 
-export default function AppHeader() {
+export default function AppHeader({ searchKeyword, setSearchKeyword }) {
   return (
     <Header>
       <Container>
@@ -60,9 +60,8 @@ export default function AppHeader() {
           <div className="input-container">
             <SearchInput
               placeholder="Youtube 검색"
-              onChange={(searchKeyword) => {
-                console.log(searchKeyword);
-              }}
+              value={searchKeyword}
+              onChange={setSearchKeyword}
             />
           </div>
         </section>
