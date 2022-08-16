@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
@@ -47,13 +47,14 @@ const Header = styled.header`
   }
 `;
 
-export default function AppHeader({ searchKeyword, setSearchKeyword, setItems }) {
+export default function AppHeader({ searchKeyword, setSearchKeyword, load, setIsReLoading }) {
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    const res = await searchYoutube(searchKeyword);
-    setItems(res.items);
+    setIsReLoading(true);
+    load();
   }
+
 
   return (
     <Header>

@@ -16,26 +16,39 @@ function mapObjectToQueryStrings(obj) {
   return result;
 }
 
-export const searchYoutube = async (searchKeyword) => {
+export const searchYoutube = async (searchKeyword, pageToken) => {
   if (useYoutube) {
     let YOUTUBE_URL = null;
+    const queryObject = {
+      maxResults: 10,
+      regionCode: "kr"
+    };
 
-    if (searchKeyword === "") {
-      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings({
-        // pageToken: pageToken, 문제있음
-        maxResults: 10,
-        chart: "mostPopular",
-        regionCode: "kr"
+    console.log("pagetoken", pageToken);
+    if (!searchKeyword) {
+      queryObject["chart"] = "mostPopular";
+
+      if (!pageToken) {
+        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
+        )}`;
+      } else {
+        queryObject["pageToken"] = pageToken;
+        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
+        )}`;
       }
-      )}`;
+
     } else {
-      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings({
-        q: searchKeyword,
-        // pageToken: pageToken, 문제있음
-        order: "viewCount",
-        maxResults: 10,
+      queryObject["q"] = searchKeyword;
+
+      if (!pageToken) {
+        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
+        )}`;
+      } else {
+        queryObject["pageToken"] = pageToken;
+        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
+        )}`;
       }
-      )}`;
+
     }
 
     const res = await fetch(YOUTUBE_URL);

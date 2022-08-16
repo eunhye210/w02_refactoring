@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import styled from "styled-components";
-import VideoInfos from "../Modal/videoInfo";
 import VideoList from "../VideoList";
 import AppHeader from "../AppHeader";
 import Container from "../shared/Container";
 import { searchYoutube } from "../../api/youtube";
+import { debounce } from "lodash";
 
 const Main = styled.main`
   margin-top: 110px;
@@ -15,30 +15,55 @@ const Main = styled.main`
 export default function App() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [pageToken, setPageToken] = useState("");
+  const [isReLoading, setIsReLoading] = useState(false);
   const [items, setItems] = useState([]);
 
+  const load = async () => {
+    console.log(isReLoading);
+    if (isReLoading) {
+      setItems([]);
+      setPageToken("");
+    }
+    const res = await searchYoutube(searchKeyword, pageToken);
+
+    setPageToken(res.nextPageToken);
+    setItems([...items, ...res.items]);
+    setIsReLoading(false);
+  }
+
   useEffect(() => {
-    const test = async () => {
-      const res = await searchYoutube(searchKeyword);
-      //setPageToken(res.nextPageToken);
-      setItems(res.items);
-    };
-    test();
+    load();
   }, []);
-  console.log(items[0]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", scroll);
+    return () => {
+      window.addEventListener("scroll", scroll);
+    }
+  })
+
+  const scroll = debounce(() => {
+    const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+
+    if (scrollHeight - 100 < scrollTop + clientHeight) {
+      load();
+    }
+  }, 200);
+
 
   return (
     <>
       <AppHeader
         searchKeyword={searchKeyword}
         setSearchKeyword={setSearchKeyword}
-        setItems={setItems}
+        load={load}
+        setIsReLoading={setIsReLoading}
       />
       <Main>
         <Container>
           <Routes>
-            <Route path="/videos" element={<VideoList items={items} />} />
-            <Route path="/videos/:videoId" element={<VideoInfos videoInfos={items} />} />
+            <Route path="/videos" element={<VideoList items={items} load={load} />} />
+            {/* <Route path="/videos/:videoId" element={<VideoInfos videoInfos={items} />} /> */}
             <Route path="/" element={<Navigate to="/videos" replace />} />
           </Routes>
         </Container>
@@ -46,38 +71,3 @@ export default function App() {
     </>
   );
 }
-
-// export default function App() {
-//   const [searchKeyword, setSearchKeyword] = useState("");
-//   const [pageToken, setPageToken] = useState("");
-//   const [items, setItems] = useState([]);
-
-//   useEffect(() => {
-//     const test = async () => {
-//       const res = await searchYoutube(searchKeyword);
-//       //setPageToken(res.nextPageToken);
-//       setItems(res.items);
-//     };
-//     test();
-//   }, []);
-//   console.log(items[0]);
-
-//   return (
-//     <>
-//       <AppHeader
-//         searchKeyword={searchKeyword}
-//         setSearchKeyword={setSearchKeyword}
-//         setItems={setItems}
-//       />
-//       <Main>
-//         <Container>
-//           <Routes>
-//             <Route path="/videos" element={<VideoList items={items} />} />
-//             <Route path="/videos/:videoId" element={<VideoInfos videoInfos={items} />} />
-//             <Route path="/" element={<Navigate to="/videos" replace />} />
-//           </Routes>
-//         </Container>
-//       </Main>
-//     </>
-//   );
-// }

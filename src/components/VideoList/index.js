@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import VideoListEntry from "../VideoListEntry";
 import Greeting from "../Modal/greetingMessage";
-import VideoInfos from "../Modal/videoInfo";
 
 const Wrapper = styled.div`
   display: grid;
@@ -14,7 +13,7 @@ const Wrapper = styled.div`
   row-gap: 60px;
 `;
 
-export default function VideoList({ items }) {
+export default function VideoList({ items, load }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
