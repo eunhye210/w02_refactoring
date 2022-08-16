@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
 import SearchInput from "../SearchInput";
 import Container from "../shared/Container";
 import Heading from "../shared/Heading";
+import { searchYoutube } from "../../api/youtube";
 
 const Header = styled.header`
   position: fixed;
@@ -46,7 +47,14 @@ const Header = styled.header`
   }
 `;
 
-export default function AppHeader({ searchKeyword, setSearchKeyword }) {
+export default function AppHeader({ searchKeyword, setSearchKeyword, setItems }) {
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const res = await searchYoutube(searchKeyword);
+    setItems(res.items);
+  }
+
   return (
     <Header>
       <Container>
@@ -58,11 +66,13 @@ export default function AppHeader({ searchKeyword, setSearchKeyword }) {
             </div>
           </Link>
           <div className="input-container">
-            <SearchInput
-              placeholder="Youtube 검색"
-              value={searchKeyword}
-              onChange={setSearchKeyword}
-            />
+            <form onSubmit={handleSubmit}>
+              <SearchInput
+                placeholder="Youtube 검색"
+                value={searchKeyword}
+                onChange={setSearchKeyword}
+              />
+            </form>
           </div>
         </section>
       </Container>

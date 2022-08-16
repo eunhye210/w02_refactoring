@@ -16,12 +16,27 @@ function mapObjectToQueryStrings(obj) {
   return result;
 }
 
-export const searchYoutube = async (options) => {
+export const searchYoutube = async (searchKeyword) => {
   if (useYoutube) {
-    const YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings({
-      q: options
+    let YOUTUBE_URL = null;
+
+    if (searchKeyword === "") {
+      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings({
+        // pageToken: pageToken, 문제있음
+        maxResults: 10,
+        chart: "mostPopular",
+        regionCode: "kr"
+      }
+      )}`;
+    } else {
+      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings({
+        q: searchKeyword,
+        // pageToken: pageToken, 문제있음
+        order: "viewCount",
+        maxResults: 10,
+      }
+      )}`;
     }
-    )}`;
 
     const res = await fetch(YOUTUBE_URL);
     const data = await res.json();
