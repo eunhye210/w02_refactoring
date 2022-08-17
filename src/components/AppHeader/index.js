@@ -47,14 +47,14 @@ const Header = styled.header`
   }
 `;
 
-export default function AppHeader({ searchKeyword, setSearchKeyword, load, setIsReLoading }) {
+export default function AppHeader({ searchKeyword, setSearchKeyword, setItems, setIsReLoading, setPageToken }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setItems([]);
+    setPageToken("");
     setIsReLoading(true);
-    load();
   }
-
 
   return (
     <Header>

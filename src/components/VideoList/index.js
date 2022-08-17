@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import VideoListEntry from "../VideoListEntry";
 import Greeting from "../Modal/greetingMessage";
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   row-gap: 60px;
 `;
 
-export default function VideoList({ items, load }) {
+export default function VideoList({ items }) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -21,7 +21,7 @@ export default function VideoList({ items, load }) {
       <Greeting isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <Wrapper>
         {items?.map((item, index) => {
-          return <VideoListEntry key={index} videoId={item.id.videoId} videoInfos={item.snippet} />
+          return <VideoListEntry key={index} videoId={item.id} videoInfos={item.snippet} />
         })}
       </Wrapper>
     </>

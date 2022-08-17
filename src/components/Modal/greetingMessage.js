@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
-import { ReactDOM } from "react";
 import { createPortal } from "react-dom";
 
 const Container = styled.div`

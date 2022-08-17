@@ -1,9 +1,6 @@
 import { YOUTUBE_API_KEY } from "../config/youtube";
 
-// true: use youtube api.
-// false: use mock data (data.json)
-// Toggle the value depends on your situation.
-const useYoutube = false;
+const useYoutube = true;
 
 function mapObjectToQueryStrings(obj) {
   let result = "";
@@ -24,31 +21,20 @@ export const searchYoutube = async (searchKeyword, pageToken) => {
       regionCode: "kr"
     };
 
-    console.log("pagetoken", pageToken);
+    if (pageToken) {
+      queryObject["pageToken"] = pageToken;
+    }
+
     if (!searchKeyword) {
       queryObject["chart"] = "mostPopular";
 
-      if (!pageToken) {
-        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
-        )}`;
-      } else {
-        queryObject["pageToken"] = pageToken;
-        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
-        )}`;
-      }
+      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject)}`;
+    }
 
-    } else {
+    if (searchKeyword) {
       queryObject["q"] = searchKeyword;
 
-      if (!pageToken) {
-        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
-        )}`;
-      } else {
-        queryObject["pageToken"] = pageToken;
-        YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject
-        )}`;
-      }
-
+      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject)}`;
     }
 
     const res = await fetch(YOUTUBE_URL);
@@ -57,7 +43,6 @@ export const searchYoutube = async (searchKeyword, pageToken) => {
     return data;
   }
 
-  // `data.json` is located in /public directory.
   const res = await fetch("/data.json", {
     headers: {
       "Content-Type": "application/json",

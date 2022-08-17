@@ -31,7 +31,8 @@ export default function VideoListEntry({ videoId, videoInfos }) {
         <img src={videoInfos.thumbnails.default.url} alt="thumbnail_url" />
       </div>
       <div className="contents">
-        {/* <b><Link to={videoId}>{videoInfos.title}</Link></b> */}
+        <b><Link to={videoId}>{videoInfos.title}</Link></b>
+        {/* <b><Link to={`${this.props.match.url}/${videoId}`}>{videoInfos.title}</Link></b> */}
         <div>{videoInfos.publishedAt.slice(0, 10)}</div>
         <div className="text">{videoInfos.description}</div>
       </div>
