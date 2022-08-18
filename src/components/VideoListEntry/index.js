@@ -24,17 +24,27 @@ const EntryWrapper = styled.div`
   }
 `;
 
-export default function VideoListEntry({ videoId, videoInfos }) {
+export default function VideoListEntry({ item, onClick}) {
+  let videoId = null;
+  const videoInfo = item.snippet;
+
+  if (item.id.videoId) {
+    videoId = item.id.videoId;
+  } else {
+    videoId = item.id;
+  }
+
   return (
     <EntryWrapper>
       <div>
-        <img src={videoInfos.thumbnails.default.url} alt="thumbnail_url" />
+        <Link to={videoId} onClick={onClick}>
+          <img src={videoInfo.thumbnails.default.url} alt="thumbnail_url" />
+        </Link>
       </div>
       <div className="contents">
-        <b><Link to={videoId}>{videoInfos.title}</Link></b>
-        {/* <b><Link to={`${this.props.match.url}/${videoId}`}>{videoInfos.title}</Link></b> */}
-        <div>{videoInfos.publishedAt.slice(0, 10)}</div>
-        <div className="text">{videoInfos.description}</div>
+        <b>{videoInfo.title}</b>
+        <div>{videoInfo.publishedAt.slice(0, 10)}</div>
+        <div className="text">{videoInfo.description}</div>
       </div>
     </EntryWrapper>
   );

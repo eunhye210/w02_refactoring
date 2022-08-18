@@ -16,6 +16,7 @@ function mapObjectToQueryStrings(obj) {
 export const searchYoutube = async (searchKeyword, pageToken) => {
   if (useYoutube) {
     let YOUTUBE_URL = null;
+
     const queryObject = {
       maxResults: 10,
       regionCode: "kr"

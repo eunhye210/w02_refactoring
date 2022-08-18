@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
 import SearchInput from "../SearchInput";
 import Container from "../shared/Container";
 import Heading from "../shared/Heading";
-import { searchYoutube } from "../../api/youtube";
 
 const Header = styled.header`
   position: fixed;
@@ -47,8 +46,13 @@ const Header = styled.header`
   }
 `;
 
-export default function AppHeader({ searchKeyword, setSearchKeyword, setItems, setIsReLoading, setPageToken }) {
-
+export default function AppHeader({
+    setItems,
+    searchKeyword,
+    setSearchKeyword,
+    setPageToken,
+    setIsReLoading
+  }) {
   function handleSubmit(e) {
     e.preventDefault();
     setItems([]);
