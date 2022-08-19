@@ -47,17 +47,17 @@ const Header = styled.header`
 `;
 
 export default function AppHeader({
-    setItems,
     searchKeyword,
     setSearchKeyword,
     setPageToken,
-    setIsReLoading
+    setYoutubeData,
+    setIsLoading
   }) {
   function handleSubmit(e) {
     e.preventDefault();
-    setItems([]);
+    setYoutubeData([]);
     setPageToken("");
-    setIsReLoading(true);
+    setIsLoading(true);
   }
 
   return (

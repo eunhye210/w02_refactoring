@@ -6,7 +6,6 @@ import Portal from "../Modal/Portal";
 import GreetingMessageModal from "../Modal/GreetingMessageModal";
 import VideoInfoModal from "../Modal/VideoInfoModal";
 
-
 const Wrapper = styled.div`
   display: grid;
   padding: 2em 0 0;
@@ -17,12 +16,12 @@ const Wrapper = styled.div`
   row-gap: 60px;
 `;
 
-export default function VideoList({ items }) {
+export default function VideoList({ youtubeData }) {
   const navigate = useNavigate();
-  const [showGreetingMsg, setshowGreetingMsg] = useState(true);
+  const [showGreetingMsg, setShowGreetingMsg] = useState(true);
   const [showVideoInfo, setShowVideoInfo] = useState(false);
 
-  function onClick() {
+  function showVideoModal() {
     setShowVideoInfo(!showVideoInfo);
     navigate('/videos');
   }
@@ -30,12 +29,12 @@ export default function VideoList({ items }) {
   return (
     <>
       <Portal>
-        {showGreetingMsg && <GreetingMessageModal onClose={() => setshowGreetingMsg(false)} />}
-        {showVideoInfo && <VideoInfoModal videoInfos={items} onClick={onClick} />}
+        {showGreetingMsg && <GreetingMessageModal onClick={() => setShowGreetingMsg(false)} />}
+        {showVideoInfo && <VideoInfoModal videoInfos={youtubeData} onClick={showVideoModal} />}
       </Portal>
       <Wrapper>
-        {items?.map((item, index) => {
-          return <VideoListEntry key={index} item={item} onClick={onClick} />
+        {youtubeData?.map((data, index) => {
+          return <VideoListEntry key={index} data={data} onClick={showVideoModal} />
         })}
       </Wrapper>
     </>

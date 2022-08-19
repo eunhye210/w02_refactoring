@@ -13,8 +13,6 @@ export default function SearchInput({ placeholder, value, onChange }) {
   );
 }
 
-// PropTypes tell other developers what `props` a component expects
-// Warnings will be shown in the console when the defined rules are violated
 SearchInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,

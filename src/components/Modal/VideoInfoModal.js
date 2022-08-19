@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
   position: fixed;
@@ -64,4 +65,9 @@ export default function VideoInfoModal({ videoInfos, onClick }) {
       </div>
     </Container>
   );
+}
+
+VideoInfoModal.propTypes = {
+  videoInfos: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
 }

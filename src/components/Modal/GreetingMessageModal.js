@@ -30,9 +30,9 @@ const Container = styled.div`
   }
 `;
 
-export default function GreetingMessageModal({ onClose }) {
+export default function GreetingMessageModal({ onClick }) {
   return (
-    <Container onClick={onClose}>
+    <Container onClick={onClick}>
       <div className="content">
         <img src={logo} alt="logo" />
         <h2>Welcome to Youtube Viewer!</h2>
@@ -41,3 +41,7 @@ export default function GreetingMessageModal({ onClose }) {
     </Container>
   );
 }
+
+GreetingMessageModal.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};

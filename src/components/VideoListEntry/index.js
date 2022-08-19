@@ -24,23 +24,21 @@ const EntryWrapper = styled.div`
   }
 `;
 
-export default function VideoListEntry({ item, onClick}) {
+export default function VideoListEntry({ data, onClick }) {
   let videoId = null;
-  const videoInfo = item.snippet;
+  const videoInfo = data.snippet;
 
-  if (item.id.videoId) {
-    videoId = item.id.videoId;
+  if (data.id.videoId) {
+    videoId = data.id.videoId;
   } else {
-    videoId = item.id;
+    videoId = data.id;
   }
 
   return (
     <EntryWrapper>
-      <div>
-        <Link to={videoId} onClick={onClick}>
-          <img src={videoInfo.thumbnails.default.url} alt="thumbnail_url" />
-        </Link>
-      </div>
+      <Link to={videoId} onClick={onClick}>
+        <img src={videoInfo.thumbnails.default.url} alt="thumbnail_url" />
+      </Link>
       <div className="contents">
         <b>{videoInfo.title}</b>
         <div>{videoInfo.publishedAt.slice(0, 10)}</div>

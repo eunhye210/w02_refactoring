@@ -14,19 +14,21 @@ const Main = styled.main`
 export default function App() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [pageToken, setPageToken] = useState("");
-  const [isReLoading, setIsReLoading] = useState(true);
-  const [items, setItems] = useState([]);
-  
+  const [youtubeData, setYoutubeData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const test = async () => {
+    if (!isLoading) return;
+
+    const getYoutubeData = async () => {
       const res = await searchYoutube(searchKeyword, pageToken);
 
       setPageToken(res.nextPageToken);
-      setItems([...items, ...res.items]);
+      setYoutubeData([...youtubeData, ...res.items]);
     }
 
-    test();
-  }, [isReLoading]);
+    getYoutubeData();
+  }, [isLoading]);
 
   useEffect(() => {
     window.addEventListener("scroll", triggerScroll);
@@ -37,9 +39,9 @@ export default function App() {
 
   const triggerScroll = useCallback(throttle(() => {
     const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
-    
-    setIsReLoading(scrollHeight - 150 < scrollTop + clientHeight);
-  }, 300), []);
+
+    setIsLoading(scrollHeight - 150 < scrollTop + clientHeight);
+  }, 500), []);
 
   return (
     <>
@@ -47,14 +49,14 @@ export default function App() {
         searchKeyword={searchKeyword}
         setSearchKeyword={setSearchKeyword}
         setPageToken={setPageToken}
-        setItems={setItems}
-        setIsReLoading={setIsReLoading}
+        setYoutubeData={setYoutubeData}
+        setIsLoading={setIsLoading}
       />
       <Main>
         <Container>
           <Routes>
-            <Route path="/videos" element={<VideoList items={items} />} />
-            <Route path="/videos/:videoId" element={<VideoList items={items} />} />
+            <Route path="/videos" element={<VideoList youtubeData={youtubeData} />} />
+            <Route path="/videos/:videoId" element={<VideoList youtubeData={youtubeData} />} />
             <Route path="/" element={<Navigate to="/videos" replace />} />
           </Routes>
         </Container>

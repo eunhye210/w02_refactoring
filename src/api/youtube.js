@@ -19,22 +19,18 @@ export const searchYoutube = async (searchKeyword, pageToken) => {
 
     const queryObject = {
       maxResults: 10,
-      regionCode: "kr"
+      regionCode: "kr",
     };
 
     if (pageToken) {
-      queryObject["pageToken"] = pageToken;
+      queryObject.pageToken = pageToken;
     }
 
     if (!searchKeyword) {
-      queryObject["chart"] = "mostPopular";
-
+      queryObject.chart = "mostPopular";
       YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject)}`;
-    }
-
-    if (searchKeyword) {
-      queryObject["q"] = searchKeyword;
-
+    } else {
+      queryObject.q = searchKeyword;
       YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject)}`;
     }
 
