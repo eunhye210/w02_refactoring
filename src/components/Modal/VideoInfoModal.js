@@ -30,7 +30,7 @@ const Container = styled.div`
     padding: 30px;
   }
   .videoInfo {
-    line-height: 180%
+    line-height: 180%;
   }
 `
 
@@ -70,4 +70,4 @@ export default function VideoInfoModal({ videoInfos, onClick }) {
 VideoInfoModal.propTypes = {
   videoInfos: PropTypes.array.isRequired,
   onClick: PropTypes.func.isRequired,
-}
+};
