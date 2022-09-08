@@ -46,7 +46,6 @@ export default function App() {
   return (
     <>
       <AppHeader
-        searchKeyword={searchKeyword}
         setSearchKeyword={setSearchKeyword}
         setPageToken={setPageToken}
         setYoutubeData={setYoutubeData}

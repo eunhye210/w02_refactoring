@@ -47,14 +47,15 @@ const Header = styled.header`
 `;
 
 export default function AppHeader({
-  searchKeyword,
   setSearchKeyword,
   setPageToken,
   setYoutubeData,
   setIsLoading
 }) {
+
   function handleSubmit(e) {
     e.preventDefault();
+    setSearchKeyword(e.target.value);
     setYoutubeData([]);
     setPageToken("");
     setIsLoading(true);
@@ -71,13 +72,7 @@ export default function AppHeader({
             </div>
           </Link>
           <div className="input-container">
-            <form onSubmit={handleSubmit}>
-              <SearchInput
-                placeholder="Youtube 검색"
-                value={searchKeyword}
-                onChange={setSearchKeyword}
-              />
-            </form>
+            <SearchInput handleSubmit={handleSubmit} />
           </div>
         </section>
       </Container>
