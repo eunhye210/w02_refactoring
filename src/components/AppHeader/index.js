@@ -46,7 +46,20 @@ const Header = styled.header`
   }
 `;
 
-export default function AppHeader() {
+export default function AppHeader({
+  searchKeyword,
+  setSearchKeyword,
+  setPageToken,
+  setYoutubeData,
+  setIsLoading
+}) {
+  function handleSubmit(e) {
+    e.preventDefault();
+    setYoutubeData([]);
+    setPageToken("");
+    setIsLoading(true);
+  }
+
   return (
     <Header>
       <Container>
@@ -58,12 +71,13 @@ export default function AppHeader() {
             </div>
           </Link>
           <div className="input-container">
-            <SearchInput
-              placeholder="Youtube 검색"
-              onChange={(searchKeyword) => {
-                console.log(searchKeyword);
-              }}
-            />
+            <form onSubmit={handleSubmit}>
+              <SearchInput
+                placeholder="Youtube 검색"
+                value={searchKeyword}
+                onChange={setSearchKeyword}
+              />
+            </form>
           </div>
         </section>
       </Container>

@@ -1,8 +1,5 @@
 import { YOUTUBE_API_KEY } from "../config/youtube";
 
-// true: use youtube api.
-// false: use mock data (data.json)
-// Toggle the value depends on your situation.
 const useYoutube = true;
 
 function mapObjectToQueryStrings(obj) {
@@ -13,15 +10,29 @@ function mapObjectToQueryStrings(obj) {
       result += `&${prop}=${obj[prop]}`;
     }
   }
-
   return result;
 }
 
-export const searchYoutube = async (options) => {
+export const searchYoutube = async (searchKeyword, pageToken) => {
   if (useYoutube) {
-    const YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(
-      options
-    )}`;
+    let YOUTUBE_URL = null;
+
+    const queryObject = {
+      maxResults: 10,
+      regionCode: "kr",
+    };
+
+    if (pageToken) {
+      queryObject.pageToken = pageToken;
+    }
+
+    if (!searchKeyword) {
+      queryObject.chart = "mostPopular";
+      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/videos?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject)}`;
+    } else {
+      queryObject.q = searchKeyword;
+      YOUTUBE_URL = `https://www.googleapis.com/youtube/v3/search?key=${YOUTUBE_API_KEY}&part=snippet${mapObjectToQueryStrings(queryObject)}`;
+    }
 
     const res = await fetch(YOUTUBE_URL);
     const data = await res.json();
@@ -29,7 +40,6 @@ export const searchYoutube = async (options) => {
     return data;
   }
 
-  // `data.json` is located in /public directory.
   const res = await fetch("/data.json", {
     headers: {
       "Content-Type": "application/json",
