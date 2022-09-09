@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { throttle } from "lodash";
 import styled from "styled-components";
 import VideoList from "../VideoList/index";
 import AppHeader from "../AppHeader/index";
 import Container from "../shared/Container";
+import useModal from "../hooks/useModal";
 import { searchYoutube } from "../../api/youtube";
-import { throttle } from "lodash";
 
 const Main = styled.main`
   margin-top: 110px;
@@ -16,6 +17,8 @@ export default function App() {
   const [pageToken, setPageToken] = useState("");
   const [youtubeData, setYoutubeData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { openModal, closeModal } = useModal();
 
   useEffect(() => {
     if (!isLoading) return;

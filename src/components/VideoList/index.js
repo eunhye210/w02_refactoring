@@ -1,10 +1,30 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 import VideoListEntry from "../VideoListEntry";
-import Portal from "../Modal/Portal";
-import GreetingMessageModal from "../Modal/GreetingMessageModal";
-import VideoInfoModal from "../Modal/VideoInfoModal";
+import useModal from "../hooks/useModal";
+import ShowModal from "../ShowModal";
+import GreetingModal from "../GreetingModal.js";
+import VideoInfoModal from "../VideoInfoModal";
+
+export default function VideoList({ youtubeData }) {
+  const { isModalOpen, modalType, openModal, closeModal } = useModal();
+
+  return (
+    <>
+      {isModalOpen &&
+        <ShowModal closeModal={closeModal} >
+          {modalType === "greetingModal" && <GreetingModal onClose={closeModal} />}
+          {modalType === "videoInfo" && <VideoInfoModal videoInfos={youtubeData} onClose={closeModal} />}
+        </ShowModal>
+      }
+      <Wrapper>
+        {youtubeData?.map((data, index) => {
+          return <VideoListEntry key={index} data={data} openModal={openModal} />
+        })}
+      </Wrapper>
+    </>
+  );
+}
 
 const Wrapper = styled.div`
   display: grid;
@@ -15,28 +35,3 @@ const Wrapper = styled.div`
   column-gap: 20px;
   row-gap: 60px;
 `;
-
-export default function VideoList({ youtubeData }) {
-  const navigate = useNavigate();
-  const [showGreetingMsg, setShowGreetingMsg] = useState(true);
-  const [showVideoInfo, setShowVideoInfo] = useState(false);
-
-  function showVideoModal() {
-    setShowVideoInfo(!showVideoInfo);
-    navigate('/videos');
-  }
-
-  return (
-    <>
-      <Portal>
-        {showGreetingMsg && <GreetingMessageModal onClick={() => setShowGreetingMsg(false)} />}
-        {showVideoInfo && <VideoInfoModal videoInfos={youtubeData} onClick={showVideoModal} />}
-      </Portal>
-      <Wrapper>
-        {youtubeData?.map((data, index) => {
-          return <VideoListEntry key={index} data={data} onClick={showVideoModal} />
-        })}
-      </Wrapper>
-    </>
-  );
-}
