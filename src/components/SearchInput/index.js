@@ -1,14 +1,24 @@
 import React from "react";
 import Input from "../shared/Input";
-import PropTypes from "prop-types";
 import { useState } from "react";
 
-export default function SearchInput({ handleSubmit }) {
+export default function SearchInput({
+  setSearchKeyword,
+  setYoutubeData,
+  setPageToken,
+}) {
   const [input, setInput] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSearchKeyword(input);
+    setYoutubeData([]);
+    setPageToken("");
+  }
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
+      <Input
         type="text"
         placeholder="Youtube 검색"
         value={input}

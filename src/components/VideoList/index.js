@@ -24,7 +24,7 @@ export default function VideoList({ youtubeData }) {
       </Wrapper>
     </>
   );
-}
+};
 
 const Wrapper = styled.div`
   display: grid;

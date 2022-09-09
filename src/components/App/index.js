@@ -5,7 +5,6 @@ import styled from "styled-components";
 import VideoList from "../VideoList/index";
 import AppHeader from "../AppHeader/index";
 import Container from "../shared/Container";
-import useModal from "../hooks/useModal";
 import { searchYoutube } from "../../api/youtube";
 
 const Main = styled.main`
@@ -18,8 +17,6 @@ export default function App() {
   const [youtubeData, setYoutubeData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { openModal, closeModal } = useModal();
-
   useEffect(() => {
     if (!isLoading) return;
 
@@ -31,7 +28,7 @@ export default function App() {
     }
 
     getYoutubeData();
-  }, [isLoading]);
+  }, [searchKeyword, isLoading]);
 
   useEffect(() => {
     window.addEventListener("scroll", triggerScroll);
@@ -52,7 +49,6 @@ export default function App() {
         setSearchKeyword={setSearchKeyword}
         setPageToken={setPageToken}
         setYoutubeData={setYoutubeData}
-        setIsLoading={setIsLoading}
       />
       <Main>
         <Container>

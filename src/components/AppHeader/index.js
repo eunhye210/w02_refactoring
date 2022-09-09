@@ -50,17 +50,7 @@ export default function AppHeader({
   setSearchKeyword,
   setPageToken,
   setYoutubeData,
-  setIsLoading
 }) {
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    setSearchKeyword(e.target.value);
-    setYoutubeData([]);
-    setPageToken("");
-    setIsLoading(true);
-  }
-
   return (
     <Header>
       <Container>
@@ -72,7 +62,11 @@ export default function AppHeader({
             </div>
           </Link>
           <div className="input-container">
-            <SearchInput handleSubmit={handleSubmit} />
+            <SearchInput
+              setSearchKeyword={setSearchKeyword}
+              setYoutubeData={setYoutubeData}
+              setPageToken={setPageToken}
+            />
           </div>
         </section>
       </Container>
